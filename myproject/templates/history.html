@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    .navbar {
+      overflow: hidden;
+      background-color: #333;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar a {
+      float: left;
+      font-size: 16px;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .dropdown {
+      float: left;
+      overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+      cursor: pointer;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 16px;
+      background-color: inherit;
+      font-family: inherit;
+      margin: 0;
+    }
+
+    .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+      background-color: red;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      float: none;
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .q {
+      text-align:center;
+      border:0.2rem solid;  
+      background-color:#FAAFBA;
+    }
+
+    .hdr {
+      font-family:Lato;
+    }
+
+    body {
+      background-color:#1a1c1c;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .icon {
+      border-radius: 50%;
+    }
+
+    .ff {
+      top: 50%;
+      bottom: 50%;
+    }
+
+    .a {
+      padding-bottom: 0;
+    }
+
+    .b {
+      padding-top:0;
+      padding-left:800px;
+    }
+
+    .main {
+      margin: 2%;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      padding: 10px 20px;
+      transition: transform 0.2s;
+      width: 90%; /* Adjust width for responsiveness */
+      text-align: center;
+      overflow-x: auto; /* Enable horizontal scroll for tables */
+    }
+
+    .main h1 {
+      color: #4CAF50;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .des {
+      padding: 3px;
+      text-align: center;
+      padding-top: 10px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    button {
+      margin-top: 40px;
+      margin-bottom: 10px;
+      background-color: white;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    button:hover {
+      background-color: black;
+      color: white;
+      transition: .5s;
+      cursor: pointer;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      background: #f3f3f3;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <h1 style="font-size:50px;" class="a"><center>HEALTH CARE RESOURCES</center></h1>
+  </div>
+
+  <div>
+    <div class="dropdown-content">
+      <a href="#" onclick="logout()">Logout</a>
+      <a href="profile.html" onclick="goToProfile()">Profile</a>
+    </div>
+  </div>
+
+  <h2><hr><marquee bgcolor="pink"> <font size="5"> Wherever the art of Medicine is loved, there is also a love of Humanity. </font></marquee></h2>
+
+  <!-- <div class="navbar">
+    <a href="sample3/">home</a>
+    <a href="daily/">DAILY TEST</a>
+    <a href="lab/">LAB TEST</a>
+    <a href="history/">HISTORY</a>
+  </div> -->
+
+  <div class="main"> 
+    <h1> Daily Test Data</h1>
+    {% if dailys%}
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Date, Time</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      {% for daily in dailys%}
+      <tbody>
+        <tr>
+          <td>{{daily.test_type}}</td>
+          <td>{{daily.uploaded_date}}</td>
+          <td><a href="{{daily.file.url}}" target="_blank">View</a></td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+      {% endfor %}
+    </table>
+    {% else %}
+    <h2>Nothing Here</h2>
+    {% endif %}
+  </div>
+
+  <div class="main"> 
+    <h1> Lab Tests</h1> 
+    {% if labs %}
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Date, Time</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      {% for lab in labs%}
+      <tbody>
+        <tr>
+          <td>{{lab.testtype}}</td>
+          <td>{{lab.uploaded_date}}</td>
+          <td><a href="{{ lab.lab_file.url }}" target="_blank">View</a></td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+      {% endfor %}
+    </table>
+    {% else %}
+    <h2>Nothing here</h2>
+    {% endif %}
+  </div>
+
+  <script src="script.js"></script> 
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        #content {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="doctorappointment/" onclick="loadContent('doctorappointment.html')">Appointments</a>
+        <a href="onlineprescription/" onclick="loadContent('onlineprescription.html')">Online Prescription</a>
+        <a href="patient_history/" onclick="loadContent('patient_history.html')">Patient History</a>
+        <a href="referrals/" onclick="loadContent('referrals.html')">Referrals</a>
+    </nav>
+    <h1>Doctor Dashboard</h1>
+    <div id="content">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        function loadContent(page) {
+            fetch(page)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+    </script>
+</body>
+</html>

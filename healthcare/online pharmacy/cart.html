@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Shopping Cart</h1>
+        <table class="table table-bordered" id="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Cart items will be dynamically loaded here -->
+            </tbody>
+        </table>
+        <button class="btn btn-primary" onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function loadCart() {
+            const cartTable = document.getElementById('cart-table').getElementsByTagName('tbody')[0];
+            cartTable.innerHTML = '';
+            cart.forEach(item => {
+                const discountedPrice = item.price - item.discount;
+                const cartRow = `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>
+                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
+                        </td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>$${item.discount.toFixed(2)}</td>
+                        <td>$${(discountedPrice * item.quantity).toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="removeFromCart(${item.id})">Remove</button>
+                        </td>
+                    </tr>
+                `;
+                cartTable.innerHTML += cartRow;
+            });
+        }
+
+        function updateQuantity(id, quantity) {
+            console.log(`Updating quantity for id ${id} to ${quantity}`);
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity = parseInt(quantity);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            } else {
+                console.error(`Item with id ${id} not found in cart`);
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function checkout() {
+            window.location.href = 'bill_generator.html';
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>

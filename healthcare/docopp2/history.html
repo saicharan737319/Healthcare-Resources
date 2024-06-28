@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previously Visited Doctors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card h2 {
+            margin: 10px 0;
+        }
+        .card p {
+            padding: 0 10px 10px;
+            color: #666;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Previously Visited Doctors</h1>
+    <div class="container" id="contractDoctorList">
+        <!-- Previously visited doctors will be inserted here by JavaScript -->
+    </div>
+
+    <script>
+        // Sample data for previously visited doctors
+        const previouslyVisitedDoctors = [
+            { name: 'Dr. Johnson', image: 'https://via.placeholder.com/300x200', specialization: 'Cardiologist', contact: 'johnson@medicalcenter.com' },
+            { name: 'Dr. Taylor', image: 'https://via.placeholder.com/300x200', specialization: 'Neurologist', contact: 'taylor@medicalcenter.com' },
+            { name: 'Dr. Davis', image: 'https://via.placeholder.com/300x200', specialization: 'Orthopedic Surgeon', contact: 'davis@medicalcenter.com' },
+            { name: 'Dr. Moore', image: 'https://via.placeholder.com/300x200', specialization: 'Pediatrician', contact: 'moore@medicalcenter.com' }
+        ];
+
+        function displayPreviouslyVisitedDoctors() {
+            const contractDoctorList = document.getElementById('contractDoctorList');
+            contractDoctorList.innerHTML = '';
+
+            if (previouslyVisitedDoctors.length > 0) {
+                previouslyVisitedDoctors.forEach(doctor => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${doctor.image}" alt="${doctor.name}">
+                        <h2>${doctor.name}</h2>
+                        <p>${doctor.specialization}</p>
+                        <p>Contact: ${doctor.contact}</p>
+                        <button class="button" onclick="bookAppointment('${doctor.name}')">Book Appointment</button>
+                    `;
+                    contractDoctorList.appendChild(card);
+                });
+            } else {
+                contractDoctorList.innerHTML = '<p>No previously visited doctors available.</p>';
+            }
+        }
+
+        function bookAppointment(doctorName) {
+            // Redirect to a booking page or handle the booking process
+            alert(`Booking an appointment with ${doctorName}`);
+            // You can redirect to another page or open a booking form
+        }
+
+        displayPreviouslyVisitedDoctors();
+    </script>
+</body>
+</html>

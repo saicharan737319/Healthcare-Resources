@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Online Pharmacy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Online Pharmacy</h1>
+        <nav>
+            <a href="{% url 'main:drindex' %}">Home</a>
+            <a href="{% url 'main:products' %}">Products</a>
+            <a href="{% url 'main:cart' %}">Cart</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Your Cart</h2>
+        <!-- Cart Table -->
+        <table id="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart-body">
+                <!-- Cart items will be dynamically loaded here -->
+            </tbody>
+        </table>
+        <div id="cart-total">
+            <!-- Total cart amount will be displayed here -->
+        </div>
+        <button class="button" onclick="checkout()">Checkout</button>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+        });
+
+        function loadCart() {
+            const cartBody = document.getElementById('cart-body');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cartBody) {
+                cartBody.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const discountedPrice = item.price - (item.discount || 0);
+                    const quantity = item.quantity || 1; // Default quantity to 1 if undefined
+                    const total = discountedPrice * quantity;
+                    const cartRow = `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>${item.discount ? `$${item.discount.toFixed(2)}` : 'N/A'}</td>
+                            <td><input type="number" value="${quantity}" min="1" onchange="updateQuantity(${index}, this.value)" /></td>
+                            <td>$<span id="item-total-${index}">${total.toFixed(2)}</span></td>
+                            <td><button class="button" onclick="removeFromCart(${index})">Remove</button></td>
+                        </tr>
+                    `;
+                    cartBody.innerHTML += cartRow;
+                });
+                updateCartTotal(cart);
+            }
+        }
+
+        function updateQuantity(index, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].quantity = parseInt(newQuantity);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function updateCartTotal(cart) {
+            const cartTotalElement = document.getElementById('cart-total');
+            if (cartTotalElement) {
+                const totalAmount = cart.reduce((total, item) => {
+                    const discountedPrice = item.price - (item.discount || 0);
+                    const quantity = item.quantity || 1;
+                    return total + discountedPrice * quantity;
+                }, 0);
+                cartTotalElement.innerHTML = `<p>Total: $${totalAmount.toFixed(2)}</p>`;
+            }
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+            alert('Item removed from cart.');
+        }
+
+        function checkout() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+            localStorage.setItem('cartForCheckout', JSON.stringify(cart));
+            window.location.href = 'bill_generator.html';
+        }
+    </script>
+</body>
+</html>

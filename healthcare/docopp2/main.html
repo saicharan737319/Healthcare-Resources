@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            margin: 5px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        #content {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card h2 {
+            margin: 10px 0;
+        }
+        .card p {
+            padding: 0 10px 10px;
+            color: #666;
+        }
+        .button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+        form {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" /*onclick="loadContent('index.html')"*/>Doctor Profiles</a>
+        <a href="history.html" /*onclick="loadContent('history.html')"*/>Previously Visited</a>
+        <a href="referral.html" /*onclick="loadContent('referral.html')">Doctor Referral</a>
+        <a href="booking.html" /*onclick="loadContent('booking.html')">Book an Appointment</a>
+    </nav> 
+    <div id="content">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        function loadContent(page) {
+            fetch(page)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                    if (page === 'index.html') {
+                        displayDoctors();
+                    } else if (page === 'history.html') {
+                        displayPreviouslyVisitedDoctors();
+                    }
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('index.html');
+        });
+
+        const doctors = [
+            { name: 'Dr. Johnson', image: 'https://via.placeholder.com/300x200', specialization: 'Cardiologist', degrees: 'MD, FACC', rating: '4.5/5', workplace: 'City Hospital', timings: 'Mon-Fri: 9am-5pm' },
+            { name: 'Dr. Taylor', image: 'https://via.placeholder.com/300x200', specialization: 'Neurologist', degrees: 'MD, FAAN', rating: '4.7/5', workplace: 'County Clinic', timings: 'Tue-Thu: 10am-4pm' },
+            { name: 'Dr. Davis', image: 'https://via.placeholder.com/300x200', specialization: 'Orthopedic Surgeon', degrees: 'MD, FAAOS', rating: '4.6/5', workplace: 'Regional Medical Center', timings: 'Wed-Fri: 8am-3pm' },
+            { name: 'Dr. Moore', image: 'https://via.placeholder.com/300x200', specialization: 'Pediatrician', degrees: 'MD, FAAP', rating: '4.8/5', workplace: 'Downtown Clinic', timings: 'Mon, Wed, Fri: 9am-5pm' }
+        ];
+
+        function displayDoctors() {
+            const doctorList = document.getElementById('doctorList');
+            doctorList.innerHTML = '';
+
+            if (doctors.length > 0) {
+                doctors.forEach(doctor => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${doctor.image}" alt="${doctor.name}">
+                        <h2>${doctor.name}</h2>
+                        <p>${doctor.specialization}</p>
+                        <p>Degrees: ${doctor.degrees}</p>
+                        <p>Rating: ${doctor.rating}</p>
+                        <p>Workplace: ${doctor.workplace}</p>
+                        <p>Timings: ${doctor.timings}</p>
+                        <button class="button" onclick="bookAppointment('${doctor.name}')">Book Appointment</button>
+                    `;
+                    doctorList.appendChild(card);
+                });
+            } else {
+                doctorList.innerHTML = '<p>No doctors available.</p>';
+            }
+        }
+
+        const previouslyVisitedDoctors = [
+            { name: 'Dr. Johnson', image: 'https://via.placeholder.com/300x200', specialization: 'Cardiologist', contact: 'johnson@medicalcenter.com' },
+            { name: 'Dr. Taylor', image: 'https://via.placeholder.com/300x200', specialization: 'Neurologist', contact: 'taylor@medicalcenter.com' },
+            { name: 'Dr. Davis', image: 'https://via.placeholder.com/300x200', specialization: 'Orthopedic Surgeon', contact: 'davis@medicalcenter.com' },
+            { name: 'Dr. Moore', image: 'https://via.placeholder.com/300x200', specialization: 'Pediatrician', contact: 'moore@medicalcenter.com' }
+        ];
+
+        function displayPreviouslyVisitedDoctors() {
+            const contractDoctorList = document.getElementById('contractDoctorList');
+            contractDoctorList.innerHTML = '';
+
+            if (previouslyVisitedDoctors.length > 0) {
+                previouslyVisitedDoctors.forEach(doctor => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${doctor.image}" alt="${doctor.name}">
+                        <h2>${doctor.name}</h2>
+                        <p>${doctor.specialization}</p>
+                        <p>Contact: ${doctor.contact}</p>
+                        <button class="button" onclick="bookAppointment('${doctor.name}')">Book Appointment</button>
+                    `;
+                    contractDoctorList.appendChild(card);
+                });
+            } else {
+                contractDoctorList.innerHTML = '<p>No previously visited doctors available.</p>';
+            }
+        }
+
+        function bookAppointment(doctorName) {
+            window.location.href = `booking.html?doctor=${doctorName}`;
+        }
+    </script>
+</body>
+</html>

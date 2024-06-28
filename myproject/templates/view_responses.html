@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Appointment Responses</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index/">Home</a>
+        <a href="Profile/" >Doctor Profiles</a>
+        <a href="booking/" >Book an Appointment</a>
+        <a href="history/" >Previously Visited Doctors</a>
+        <a href="referral/" >referral Doctors</a>
+        <a href="online_communication/" >Offline Communication</a>
+        <a href="view_responses/" >View Responses</a>
+    </nav>
+    <div class="container">
+        <div id="responses" class="content">
+            <h2 class="section-title">Your Appointment Responses</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Doctor Name</th>
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="responseRows">
+                    <!-- Response rows will be dynamically loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const responses = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        function loadResponses() {
+            const responseTable = document.getElementById('responseRows');
+            responseTable.innerHTML = '';
+            responses.forEach((response, index) => {
+                const row = `
+                    <tr>
+                        <td>Dr. Johnson</td>
+                        <td>${response.patientName}</td>
+                        <td>${response.date}</td>
+                        <td>${response.time}</td>
+                        <td>${response.status}</td>
+                    </tr>
+                `;
+                responseTable.innerHTML += row;
+            });
+        }
+
+        loadResponses();
+    </script>
+</body>
+</html>

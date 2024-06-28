@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+    <body>
+        <!-- Login Form -->
+    <div class="container" id="loginForm">
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input value="login" name="form" style="display: none;"/>
+            <input type="text" id="username" placeholder="Username" name="username" required><br><br>
+            <input type="password" id="password" placeholder="Password" name="password" required><br><br>
+            <input type="submit" value="Login" />
+            <p>Don't have an account? <a href="#" onclick="showSignupForm()">Sign up</a></p>
+        </form>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="container hidden" id="signupForm">
+        <h2>Sign Up</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input value="signup" name="form" style="display: none;"/>
+        <input type="text" id="newUsername" placeholder="Username" name="username" required><br><br>
+        <input type="text" id="newEmail" placeholder="email" name="email" required><br><br>
+        <input type="password" id="newPassword" placeholder="Password" name="password" required><br><br>
+        <input type="checkbox" name="is_doctor" id="id_is_doctor">
+        <label for="id_is_doctor">Register as Doctor</label>
+        <input type="checkbox" name="is_patient" id="id_is_patient">
+        <label for="id_is_patient">Register as Patient</label>
+        <input type="submit" value="Sign up" />
+        <p>Already have an account? <a href="#" onclick="showLoginForm()">Login</a></p>
+        </form>
+    </div>
+
+
+    <script>
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            // Add actual authentication logic here
+            if (username === 'user' && password === '123') {
+                window.location.href = 'sample3.html';
+            } else {
+                alert('Invalid credentials, please try again.');
+            }
+        }
+
+        function signup() {
+            var newUsername = document.getElementById('newUsername').value;
+            var newPassword = document.getElementById('newPassword').value;
+            // Add actual signup logic here
+            alert('Sign up successful! Please login.');
+            showLoginForm();
+        }
+
+        function showSignupForm() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+
+        function showLoginForm() {
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+    </script>
+    </body>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        #content {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index/" onclick="loadContent('index.html')">Doctor Profiles</a>
+        <a href="booking/" onclick="loadContent('booking.html')">Book an Appointment</a>
+        <a href="offline_communication/" onclick="loadContent('offline_communication.html')">Offline Communication</a>
+    </nav>
+    <div id="content">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        function loadContent(page) {
+            fetch(page)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                    if (page === 'index.html') {
+                        displayDoctors();
+                    }
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        // Load Doctor Profiles by default on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('index.html');
+        });
+
+        // Functions from the index.html script
+        const doctors = [
+            { name: 'Dr. Johnson', image: 'https://via.placeholder.com/300x200', specialization: 'Cardiologist', degrees: 'MD, FACC', rating: '4.5/5', workplace: 'City Hospital', timings: 'Mon-Fri: 9am-5pm' },
+            { name: 'Dr. Taylor', image: 'https://via.placeholder.com/300x200', specialization: 'Neurologist', degrees: 'MD, FAAN', rating: '4.7/5', workplace: 'County Clinic', timings: 'Tue-Thu: 10am-4pm' },
+            { name: 'Dr. Davis', image: 'https://via.placeholder.com/300x200', specialization: 'Orthopedic Surgeon', degrees: 'MD, FAAOS', rating: '4.6/5', workplace: 'Regional Medical Center', timings: 'Wed-Fri: 8am-3pm' },
+            { name: 'Dr. Moore', image: 'https://via.placeholder.com/300x200', specialization: 'Pediatrician', degrees: 'MD, FAAP', rating: '4.8/5', workplace: 'Downtown Clinic', timings: 'Mon, Wed, Fri: 9am-5pm' }
+        ];
+
+        function displayDoctors() {
+            const doctorList = document.getElementById('doctorList');
+            doctorList.innerHTML = '';
+
+            if (doctors.length > 0) {
+                doctors.forEach(doctor => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${doctor.image}" alt="${doctor.name}">
+                        <h2>${doctor.name}</h2>
+                        <p>${doctor.specialization}</p>
+                        <p>Degrees: ${doctor.degrees}</p>
+                        <p>Rating: ${doctor.rating}</p>
+                        <p>Workplace: ${doctor.workplace}</p>
+                        <p>Timings: ${doctor.timings}</p>
+                        <button class="button" onclick="bookAppointment('${doctor.name}')">Book Appointment</button>
+                    `;
+                    doctorList.appendChild(card);
+                });
+            } else {
+                doctorList.innerHTML = '<p>No doctors available.</p>';
+            }
+        }
+
+        function bookAppointment(doctorName) {
+            window.location.href = `booking.html?doctor=${doctorName}`;
+        }
+    </script>
+</body>
+</html>

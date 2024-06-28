@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav div {
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+        }
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('resultForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var resultId = document.getElementById('resultId').value;
+                document.getElementById('resultMessage').textContent = 'Results for ID ' + resultId + ' will be displayed here.';
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1>Lab Results</h1>
+    </header>
+
+    <nav>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="appointments.html">Appointments</a>
+            <a href="tests.html">Tests</a>
+            <a href="results.html">Results</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <section>
+        <form id="resultForm">
+            <label for="resultId">Enter Result ID:</label>
+            <input type="text" id="resultId" name="resultId"><br>
+
+            <input type="submit" value="Get Results">
+        </form>
+        <p id="resultMessage" style="color: blue; margin-top: 20px;"></p>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Types of Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        nav div {
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #e2e2e2;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tests = [
+                { name: 'Blood Test', price: '$50' },
+                { name: 'Urine Test', price: '$30' },
+                { name: 'X-Ray', price: '$100' },
+                { name: 'MRI', price: '$500' },
+                { name: 'CT Scan', price: '$300' }
+            ];
+
+            var testsList = document.getElementById('testsList');
+
+            tests.forEach(function(test) {
+                var li = document.createElement('li');
+                li.textContent = test.name + ' - ' + test.price;
+
+                var button = document.createElement('button');
+                button.textContent = 'Add to Appointment';
+                button.addEventListener('click', function() {
+                    var selectedTests = JSON.parse(localStorage.getItem('selectedTests')) || [];
+                    selectedTests.push(test.name);
+                    localStorage.setItem('selectedTests', JSON.stringify(selectedTests));
+                    alert(test.name + ' has been added to your appointment.');
+                });
+
+                li.appendChild(button);
+                testsList.appendChild(li);
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1>Types of Tests</h1>
+    </header>
+
+    <nav>
+        <div>
+            <a href="index/">Home</a>
+            <a href="appointments/">Appointments</a>
+            <a href="tests/">Tests</a>
+            <a href="results/">Results</a>
+            <a href="contact/">Contact</a>
+        </div>
+    </nav>
+
+    <section>
+        <h2>Available Tests</h2>
+        <ul id="testsList"></ul>
+    </section>
+
+</body>
+</html>

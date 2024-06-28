@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enhanced Chatbot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .chat-container {
+        width: 350px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .chat-display {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fafafa;
+    }
+    .chat-display p {
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .chat-display .user {
+        background-color: #d1ecf1;
+        text-align: right;
+    }
+    .chat-display .bot {
+        background-color: #f8d7da;
+        text-align: left;
+    }
+    .options button {
+        display: block;
+        width: calc(100% - 10px);
+        margin: 5px auto;
+        padding: 10px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .options button:hover {
+        background-color: #0056b3;
+    }
+    .input-container {
+        display: flex;
+        margin-top: 10px;
+    }
+    .input-container input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+    }
+    .input-container button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+    .input-container button:hover {
+        background-color: #218838;
+    }
+    .review-container {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .review-container button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #ffc107;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .review-container button:hover {
+        background-color: #e0a800;
+    }
+    .attachment-options {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .attachment-options input {
+        display: none;
+    }
+    .attachment-options label {
+        padding: 10px;
+        background-color: #17a2b8;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .attachment-options label:hover {
+        background-color: #138496;
+    }
+    .clear-button {
+        display: block;
+        width: calc(100% - 10px);
+        margin: 5px auto;
+        padding: 10px;
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+    .clear-button:hover {
+        background-color: #c82333;
+    }
+</style>
+</head>
+<body>
+<div class="chat-container">
+    <div id="chat-display" class="chat-display">
+        <p class="bot">Hello! How can I assist you today?</p>
+    </div>
+    <div class="options">
+        <button onclick="sendMessage('I am not feeling well')">Feeling Unwell</button>
+        <button onclick="sendMessage('I have a specific question')">Question</button>
+        <button onclick="sendMessage('I need medical advice')">Medical Advice</button>
+    </div>
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Type your message here...">
+        <button onclick="sendUserMessage()">Send</button>
+    </div>
+    <div class="attachment-options">
+        <input type="file" id="photoInput" accept="image/*" onchange="sendPhoto(this)">
+        <label for="photoInput">Attach Photo</label>
+        <input type="file" id="audioInput" accept="audio/*" onchange="sendAudio(this)">
+        <label for="audioInput">Attach Audio</label>
+    </div>
+    <div id="review-container" class="review-container">
+        <p>Please rate your experience:</p>
+        <button onclick="submitReview(1)">1</button>
+        <button onclick="submitReview(2)">2</button>
+        <button onclick="submitReview(3)">3</button>
+        <button onclick="submitReview(4)">4</button>
+        <button onclick="submitReview(5)">5</button>
+    </div>
+    <button class="clear-button" onclick="clearChat()">Clear Chat</button>
+</div>
+<script>
+    let userFinished = false;
+
+    function sendMessage(message) {
+        displayMessage('user', message);
+        generateBotResponse(message);
+    }
+
+    function sendUserMessage() {
+        const userInput = document.getElementById('userInput').value;
+        if (userInput.trim() !== '') {
+            displayMessage('user', userInput);
+            generateBotResponse(userInput);
+            document.getElementById('userInput').value = '';
+        }
+    }
+
+    function displayMessage(sender, message) {
+        const chatDisplay = document.getElementById('chat-display');
+        const messageElement = document.createElement('p');
+        messageElement.classList.add(sender);
+        messageElement.textContent = message;
+        chatDisplay.appendChild(messageElement);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function displayImage(sender, src) {
+        const chatDisplay = document.getElementById('chat-display');
+        const imgElement = document.createElement('img');
+        imgElement.src = src;
+        imgElement.style.maxWidth = '100%';
+        imgElement.style.borderRadius = '5px';
+        imgElement.style.margin = '5px 0';
+        chatDisplay.appendChild(imgElement);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function displayAudio(sender, src) {
+        const chatDisplay = document.getElementById('chat-display');
+        const audioElement = document.createElement('audio');
+        audioElement.src = src;
+        audioElement.controls = true;
+        audioElement.style.width = '100%';
+        audioElement.style.margin = '5px 0';
+        chatDisplay.appendChild(audioElement);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function sendPhoto(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            displayImage('user', e.target.result);
+            generateBotResponse('photo');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function sendAudio(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            displayAudio('user', e.target.result);
+            generateBotResponse('audio');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function generateBotResponse(userInput) {
+        let response = '';
+        if (userInput.toLowerCase().includes('not feeling well')) {
+            response = 'I\'m sorry to hear that. Can you describe your symptoms?';
+        } else if (userInput.toLowerCase().includes('question')) {
+            response = 'Sure, go ahead and ask your question.';
+        } else if (userInput.toLowerCase().includes('medical advice')) {
+            response = 'I can provide some general advice, but please consult a doctor for serious issues.';
+        } else if (userInput === 'photo') {
+            response = 'Thank you for the photo. A doctor will review it shortly.';
+        } else if (userInput === 'audio') {
+            response = 'Thank you for the audio. A doctor will review it shortly.';
+        } else if (userInput.toLowerCase().includes('thank you') || userInput.toLowerCase().includes('thanks')) {
+            response = 'You\'re welcome! Is there anything else I can assist you with?';
+            userFinished = true;
+        } else {
+            response = 'I\'m here to help! Can you please provide more details?';
+            // Optionally, you can prompt for more specific questions here if needed.
+        }
+        displayMessage('bot', response);
+        if (userFinished) {
+            showReview();
+        }
+    }
+
+    function showReview() {
+        document.getElementById('review-container').style.display = 'block';
+    }
+
+    function submitReview(rating) {
+        displayMessage('user', `I rate my experience: ${rating}/5`);
+        displayMessage('bot', 'Thank you for your feedback!');
+        document.getElementById('review-container').style.display = 'none';
+    }
+
+    function clearChat() {
+        document.getElementById('chat-display').innerHTML = '<p class="bot">Hello! How can I assist you today?</p>';
+        document
+
+        document.getElementById('review-container').style.display = 'none';
+        userFinished = false;
+    }
+</script>
+</body>
+</html>

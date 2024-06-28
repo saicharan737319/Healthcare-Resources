@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Referral</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        form {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doctor Referral</h1>
+    <form id="referralForm">
+        <label for="currentDoctor">Current Doctor</label>
+        <input type="text" id="currentDoctor" name="currentDoctor" required>
+        
+        <label for="referredDoctor">Referred Doctor</label>
+        <input type="text" id="referredDoctor" name="referredDoctor" required>
+        
+        <label for="reason">Reason for Referral</label>
+        <textarea id="reason" name="reason" rows="4" required></textarea>
+        
+        <button type="submit">Submit Referral</button>
+    </form>
+
+    <script>
+        // Handle form submission
+        document.getElementById('referralForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Referral submitted successfully!');
+            // In a real application, you would send the form data to the server here
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        form {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'main:home' %}">Home</a>
+        <a href="{% url 'main:profile' %}" >Doctor Profiles</a>
+        <a href="{% url 'main:booking' %}" >Book an Appointment</a>
+        <a href="{% url 'main:bookinghistory' %}" >Previously Visited Doctors</a>
+    </nav>
+
+    <h1>Book an Appointment</h1>
+    <form id="appointmentForm" method='POST'>
+        {% csrf_token %}
+        <label for="doctorName">Doctor Name</label>
+        <input type="text" id="doctorName" name="doctorName" required>
+        
+        <label for="patientName">Patient Name</label>
+        <input type="text" id="patientName" name="patientName" required>
+        
+        <label for="appointmentDate">Appointment Date</label>
+        <input type="date" id="appointmentDate" name="appointmentDate" required>
+        
+        <label for="appointmentTime">Appointment Time</label>
+        <input type="time" id="appointmentTime" name="appointmentTime" required>
+        
+        <label for="reason">Reason for Appointment</label>
+        <textarea id="reason" name="reason" rows="4" required></textarea>
+        
+        <button type="submit">Book Appointment</button>
+    </form>
+
+    <!-- <script>
+        // Function to pre-fill the doctor name
+        function prefillDoctorName(doctorName) {
+            document.getElementById('doctorName').value = doctorName;
+        }
+
+        // Example of pre-filling the form (this would be done dynamically in a real application)
+        prefillDoctorName('Dr. Johnson');
+
+        // Handle form submission
+        document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const appointment = {
+                doctorName: document.getElementById('doctorName').value,
+                patientName: document.getElementById('patientName').value,
+                appointmentDate: document.getElementById('appointmentDate').value,
+                appointmentTime: document.getElementById('appointmentTime').value,
+                reason: document.getElementById('reason').value,
+                status: 'Pending'
+            };
+            // Store appointment locally for simplicity (in a real application, you'd send this to a server)
+            localStorage.setItem('appointment', JSON.stringify(appointment));
+            alert('Appointment booked successfully!');
+        });
+    </script> -->
+</body>
+</html>

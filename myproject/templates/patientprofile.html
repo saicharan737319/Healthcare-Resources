@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        .container h1 {
+            font-size: 26px;
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .container input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .container button {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .family-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 10px; /* Added margin bottom */
+        }
+        .family-buttons button {
+            padding: 10px;
+            font-size: 14px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+        .family-buttons button:hover {
+            background-color: #5a6268;
+        }
+        .family-profile {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Profile Page -->
+    <div id="mainProfilePage">
+        <div class="container active">
+            <h1>Main Profile</h1>
+            <div id="familyButtons" class="family-buttons">
+                <!-- Family member buttons will be dynamically added here -->
+            </div>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Age:</strong> 30</p>
+            <p><strong>Blood Group:</strong> O+</p>
+            <p><strong>Email:</strong> <span id="mainProfileEmail">john.doe@example.com</span></p>
+            <p><strong>Address:</strong> <span id="mainProfileAddress">456 Elm St, Anytown, USA</span></p>
+            <p><strong>Height:</strong> <span id="mainProfileHeight"></span></p>
+            <p><strong>Weight:</strong> <span id="mainProfileWeight"></span></p>
+            <!-- Button to toggle medical profile -->
+            <button onclick="toggleMedicalProfile()">Edit Medical Profile</button>
+            <!-- Button to add family members -->
+            <button onclick="addFamilyMember()">Add Family Member</button>
+            <div id="mainProfileAlert" class="alert"></div>
+        </div>
+    </div>
+
+    <!-- Medical Profile Page -->
+    <div id="medicalProfilePage" style="display: none;">
+        <div class="container">
+            <h1>Medical Profile</h1>
+            <p><strong>Email:</strong> <input type="email" id="medicalProfileEmail"></p>
+            <p><strong>Address:</strong> <input type="text" id="medicalProfileAddress"></p>
+            <p><strong>Height:</strong> <input type="text" id="medicalProfileHeight"></p>
+            <p><strong>Weight:</strong> <input type="text" id="medicalProfileWeight"></p>
+            <button onclick="saveMedicalProfile()">Save Medical Profile</button>
+            <button onclick="backToMainProfile()">Back to Main Profile</button>
+            <div id="medicalProfileAlert" class="alert"></div>
+        </div>
+    </div>
+
+    <!-- Family Profile Page -->
+    <div id="familyProfilePage" style="display: none;">
+        <div class="container">
+            <h1>Family Details</h1>
+<p><strong>Name:</strong> <input type="text" id="familyName"></p>
+<p><strong>Relation:</strong> <input type="text" id="familyRelation"></p>
+<p><strong>Age:</strong> <input type="text" id="familyAge"></p>
+<p><strong>Height:</strong> <input type="text" id="familyHeight"></p>
+<p><strong>Weight:</strong> <input type="text" id="familyWeight"></p>
+<button onclick="saveFamilyProfile()">Save Family Details</button>
+<button onclick="backToMainProfile()">Back to Main Profile</button>
+<div id="familyProfileAlert" class="alert"></div>
+</div>
+</div>
+
+<script>
+    const mainProfileData = {
+        email: "john.doe@example.com",
+        address: "456 Elm St, Anytown, USA",
+        height: "",
+        weight: ""
+    };
+
+    let familyProfileData = [
+        {
+            name: "Jane Doe",
+            relation: "Spouse",
+            age: "28",
+            height: "170 cm",
+            weight: "65 kg"
+        },
+        {
+            name: "Adam Doe",
+            relation: "Child",
+            age: "5",
+            height: "110 cm",
+            weight: "20 kg"
+        }
+    ];
+
+    function populateMainProfileData() {
+        document.getElementById('mainProfileEmail').textContent = mainProfileData.email;
+        document.getElementById('mainProfileAddress').textContent = mainProfileData.address;
+        document.getElementById('mainProfileHeight').textContent = mainProfileData.height;
+        document.getElementById('mainProfileWeight').textContent = mainProfileData.weight;
+
+        // Display family member buttons
+        const familyButtonsContainer = document.getElementById('familyButtons');
+        familyButtonsContainer.innerHTML = ''; // Clear previous data
+
+        familyProfileData.forEach((member, index) => {
+            const memberButton = document.createElement('button');
+            memberButton.textContent = member.name;
+            memberButton.onclick = () => viewFamilyProfile(index);
+            familyButtonsContainer.appendChild(memberButton);
+        });
+    }
+
+    function viewFamilyProfile(index) {
+        const member = familyProfileData[index];
+        document.getElementById('familyName').value = member.name;
+        document.getElementById('familyRelation').value = member.relation;
+        document.getElementById('familyAge').value = member.age;
+        document.getElementById('familyHeight').value = member.height;
+        document.getElementById('familyWeight').value = member.weight;
+    }
+
+    function addFamilyMember() {
+        const name = document.getElementById('familyName').value;
+        const relation = document.getElementById('familyRelation').value;
+        const age = document.getElementById('familyAge').value;
+        const height = document.getElementById('familyHeight').value;
+        const weight = document.getElementById('familyWeight').value;
+
+        // Add the new family member to the array
+        familyProfileData.push({
+            name: name,
+            relation: relation,
+            age: age,
+            height: height,
+            weight: weight
+        });
+
+        // Clear input fields
+        document.getElementById('familyName').value = '';
+        document.getElementById('familyRelation').value = '';
+        document.getElementById('familyAge').value = '';
+        document.getElementById('familyHeight').value = '';
+        document.getElementById('familyWeight').value = '';
+
+        // Update the family member buttons
+        populateMainProfileData();
+    }
+
+    function saveMedicalProfile() {
+        // Implement save medical profile functionality if needed
+    }
+
+    function backToMainProfile() {
+        document.getElementById('mainProfilePage').style.display = 'block';
+        document.getElementById('medicalProfilePage').style.display = 'none';
+        document.getElementById('familyProfilePage').style.display = 'none';
+    }
+
+    function toggleMedicalProfile() {
+        document.getElementById('mainProfilePage').style.display = 'none';
+        document.getElementById('medicalProfilePage').style.display = 'block';
+        document.getElementById('familyProfilePage').style.display = 'none';
+    }
+
+    // Initialize
+    populateMainProfileData();
+</script>
+</body>
+</html>
+

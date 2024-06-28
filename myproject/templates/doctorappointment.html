@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointments</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'main:doctorappointment' %}">Appointments</a>
+        <a href="{% url 'main:onlineprescription' %}">Online Prescription</a>
+        <a href="{% url 'main:patienthistory' %}">Patient History</a>
+        <a href="{% url 'main:referral' %}">Referrals</a>
+    </nav>
+
+    <div class="container">
+        <div id="appointments" class="content">
+            <h2 class="section-title">Appointments</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentRows">
+                    <!-- Appointment rows will be dynamically loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const appointments = JSON.parse(localStorage.getItem('appointments')) || [
+            { patientName: 'John Doe', date: '2024-06-21', time: '10:00 AM', status: 'Pending' },
+            { patientName: 'Jane Smith', date: '2024-06-21', time: '11:00 AM', status: 'Confirmed' },
+            // More appointments can be added here
+        ];
+
+        function loadAppointments() {
+            const appointmentTable = document.getElementById('appointmentRows');
+            appointmentTable.innerHTML = '';
+            appointments.forEach((appointment, index) => {
+                const row = `
+                    <tr>
+                        <td>${appointment.patientName}</td>
+                        <td>${appointment.date}</td>
+                        <td>${appointment.time}</td>
+                        <td>${appointment.status}</td>
+                        <td>
+                            <button class="btn btn-success" onclick="updateStatus(${index}, 'Confirmed')">Confirm</button>
+                            <button class="btn btn-danger" onclick="updateStatus(${index}, 'Rejected')">Reject</button>
+                            <button class="btn btn-warning" onclick="rescheduleAppointment(${index})">Reschedule</button>
+                        </td>
+                    </tr>
+                `;
+                appointmentTable.innerHTML += row;
+            });
+        }
+
+        function updateStatus(index, status) {
+            appointments[index].status = status;
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            loadAppointments();
+        }
+
+        function rescheduleAppointment(index) {
+            const newTime = prompt('Enter new time for rescheduled appointment (HH:MM AM/PM)');
+            if (newTime) {
+                appointments[index].time = newTime;
+                appointments[index].status = 'Rescheduled';
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                loadAppointments();
+                alert('Appointment rescheduled successfully!');
+            }
+        }
+
+        loadAppointments();
+    </script>
+</body>
+</html>

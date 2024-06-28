@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Online Pharmacy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: calc(100% - 16px); /* Adjust for padding */
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .product-item {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column; /* Changed to column for better layout */
+        }
+
+        .product-item img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .product-item h3 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .product-item p {
+            font-size: 1em;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .product-item button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px; /* Added margin-top for spacing */
+        }
+
+        .product-item button:hover {
+            background-color: #d32f2f;
+        }
+
+        .category-title {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+
+        .product-list {
+            margin-bottom: 30px;
+        }
+
+        .product-list .category-title {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+
+        .product-list .product-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            overflow-y: hidden; /* Hide vertical scrollbar */
+            white-space: nowrap; /* Keep items in a single line */
+            padding-bottom: 10px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            display: flex;
+        }
+
+        .existing-categories {
+            margin-top: 10px;
+        }
+
+        .remove-category {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .remove-category:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Online Pharmacy</h1>
+        <nav>
+            <a href="#" onclick="showSection('addProductSection')">Add Product</a>
+            <a href="#" onclick="showSection('addCategorySection')">Add Category</a>
+            <a href="#" onclick="showSection('productListSection')">Product List</a>
+        </nav>
+    </header>
+    <main>
+        <div id="addProductSection" class="hidden">
+            <h2>Add Product</h2>
+            <form id="adminForm">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" name="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Product Price</label>
+                    <input type="number" id="productPrice" name="productPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDiscount">Product Discount (%)</label>
+                    <input type="number" id="productDiscount" name="productDiscount">
+                </div>
+              <!--  <div class="form-group">
+                    <label for="productImage">Product Image URL</label>
+                    <input type="text" id="productImage" name="productImage" required>
+                </div>
+            -->
+                <div class="form-group">
+                    <label for="productCategory">Product Category</label>
+                    <select id="productCategory" name="productCategory" required>
+                        <!-- Existing categories will be loaded here dynamically -->
+                    </select>
+                </div>
+                <button type="submit" class="button">Add Product</button>
+            </form>
+        </div>
+
+        <div id="addCategorySection" class="hidden">
+            <h2>Add New Category</h2>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="newCategoryName">New Category Name</label>
+                    <input type="text" id="newCategoryName" name="newCategoryName" required>
+                </div>
+                <button type="submit" class="button">Add Category</button>
+            </form>
+            <div class="existing-categories">
+                <h3>Existing Categories:</h3>
+                <ul id="existingCategoriesList">
+                    <!-- Existing categories will be listed here -->
+                </ul>
+            </div>
+        </div>
+
+        <div id="productListSection" class="hidden">
+            <h2>Product List</h2>
+            <div id="product-list">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminForm = document.getElementById('adminForm');
+            adminForm.addEventListener('submit', addProduct);
+
+            const categoryForm = document.getElementById('categoryForm');
+            categoryForm.addEventListener('submit', addCategory);
+
+            loadCategories();
+            loadProducts();
+            showSection('addProductSection'); // Default section
+        });
+
+        function showSection(sectionId) {
+            document.getElementById('addProductSection').classList.add('hidden');
+            document.getElementById('addCategorySection').classList.add('hidden');
+            document.getElementById('productListSection').classList.add('hidden');
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function loadCategories() {
+            const categorySelect = document.getElementById('productCategory');
+            const categories = JSON.parse(localStorage.getItem('categories')) || ['medicine', 'firstaid'];//, 'homeopathy', 'ayurved',
+            categorySelect.innerHTML = '';
+            const existingCategoriesList = document.getElementById('existingCategoriesList');
+            existingCategoriesList.innerHTML = '';
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                categorySelect.appendChild(option);
+
+                const listItem = document.createElement('li');
+                listItem.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-category';
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = () => removeCategory(category);
+                listItem.appendChild(removeButton);
+                existingCategoriesList.appendChild(listItem);
+            });
+
+            localStorage.setItem('categories', JSON.stringify(categories));
+        }
+
+        function addCategory(event) {
+            event.preventDefault();
+            const newCategoryName = document.getElementById('newCategoryName').value.trim().toLowerCase();
+            if (!newCategoryName) return;
+
+            let categories = JSON.parse(localStorage.getItem('categories')) || [];
+            if (!categories.includes(newCategoryName)) {
+                categories.push(newCategoryName);
+                localStorage.setItem('categories', JSON.stringify(categories));
+                loadCategories();
+                createCategorySection(newCategoryName);
+            }
+
+            document.getElementById('categoryForm').reset();
+        }
+
+        function removeCategory(category) {
+            let categories = JSON.parse(localStorage.getItem('categories')) || [];
+            categories = categories.filter(cat => cat !== category);
+            localStorage.setItem('categories', JSON.stringify(categories));
+            loadCategories();
+            loadProducts();
+        }
+
+        function createCategorySection(category) {
+            const productList = document.getElementById('product-list');
+            const categoryDiv = document.createElement('div');
+            categoryDiv.id = category;
+            categoryDiv.className = 'product-list';
+            categoryDiv.innerHTML = `
+                <div class="category-title">${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                <div class="product-container" id="${category}-container"></div>
+            `;
+            productList.appendChild(categoryDiv);
+        }
+
+        function addProduct(event) {
+            event.preventDefault();
+            const form = event.target;
+            const productName = form.productName.value;
+            const productPrice = parseFloat(form.productPrice.value);
+            const productDiscount = parseFloat(form.productDiscount.value) || 0;
+            //const productImage = form.productImage.value;
+            const productCategory = form.productCategory.value;
+
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            products.push({ name: productName, price: productPrice, discount: productDiscount, category: productCategory });//, image: productImage
+            localStorage.setItem('products', JSON.stringify(products));
+            loadProducts();
+            form.reset();
+        }
+
+        function loadProducts() {
+            const categories = JSON.parse(localStorage.getItem('categories')) || ['medicine', 'firstaid'];// 'homeopathy', 'ayurved',
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+
+            categories.forEach(category => {
+                let container = document.getElementById(`${category}-container`);
+                if (!container) {
+                    createCategorySection(category);
+                    container = document.getElementById(`${category}-container`);
+                }
+                container.innerHTML = '';
+                let categoryProducts = products.filter(product => product.category === category);
+                categoryProducts.forEach((product, index) => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'product-item';
+                    productItem.innerHTML = `
+                        
+                        <div>
+                            <h3>${product.name}</h3>
+                            <p>Price: $${product.price.toFixed(2)}</p>
+                            <p>Discount: ${product.discount}%</p>
+                        </div>
+                        <button onclick="removeProduct(${index})">Remove</button>
+                    `;
+                    container.appendChild(productItem);
+                });
+            });
+        }
+
+        function removeProduct(index) {
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            products.splice(index, 1);
+            localStorage.setItem('products', JSON.stringify(products));
+            loadProducts();
+        }
+    </script>
+</body>
+</html>

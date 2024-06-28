@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            background-color: #007bff;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px; /* Increased width for a larger frame */
+            margin: 20px auto;
+            padding: 40px; /* Increased padding for more space */
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 40px; /* Increased margin for better spacing */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px; /* Increased margin for better spacing */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 16px; /* Increased padding for better readability */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'main:doctorappointment' %}">Appointments</a>
+        <a href="{% url 'main:onlineprescription' %}">Online Prescription</a>
+        <a href="{% url 'main:patienthistory' %}">Patient History</a>
+        <a href="{% url 'main:referral' %}">Referrals</a>
+    </nav>
+    <div class="container">
+        <h2>Patient History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Appointment Date</th>
+                    <th>Prescription</th>
+                    <th>Next Appointment</th>
+                </tr>
+            </thead>
+            <tbody id="history-table-body">
+                <!-- Patient history records will be dynamically loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample data for patient history
+        const patientHistory = [
+            { name: 'John Doe', date: '2024-06-20', prescription: 'Medication A, Medication B', nextAppointment: '2024-07-20' },
+            { name: 'Jane Smith', date: '2024-06-21', prescription: 'Medication C', nextAppointment: '2024-07-21' },
+            { name: 'Alice Johnson', date: '2024-06-22', prescription: 'Medication D, Medication E', nextAppointment: '2024-07-22' },
+            // Add more records as needed
+        ];
+
+        function loadHistory() {
+            const tableBody = document.getElementById('history-table-body');
+            tableBody.innerHTML = '';
+            patientHistory.forEach(record => {
+                const row = `
+                    <tr>
+                        <td>${record.name}</td>
+                        <td>${record.date}</td>
+                        <td>${record.prescription}</td>
+                        <td>${record.nextAppointment}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        loadHistory();
+    </script>
+</body>
+</html>

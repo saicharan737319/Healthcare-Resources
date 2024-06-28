@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .logo-container {
+            position: relative;
+        }
+
+        .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .logo-container:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .title {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .main {
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1 0 21%;
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .card .image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .card .image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card .title {
+            font-size: 1.2em;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card .des {
+            padding: 12px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .button, .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .button:hover, .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn a, .button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn a:hover, .button a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 0 46%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                flex: 1 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page After Login -->
+    <div id="mainPage" >
+        <div class="header">
+            <h1 class="title">HEALTH CARE RESOURCES</h1>
+            <div class="logo-container">
+                <img src="https://www.glosentindia.com/assets/img/mm.png" alt="Logo" class="logo">
+                <div class="dropdown-content">
+                    <a href="#" onclick="logout()">Logout</a>
+                    <a href="profile.html" onclick="goToProfile()">Profile</a>
+                </div>
+            </div>
+        </div>
+        <h2>
+
+            <marquee>Wherever the art of Medicine is loved, there is also a love of Humanity.</marquee>
+        </h2>
+
+        <div class="navbar">
+            <a href="#view">Home</a>
+            <a href="About Us.html">About Us</a>
+            <a href="About The Project.html">About Project</a>
+            <a href="#help">Approved by Expert</a>
+            <a href="#view">Help</a>
+            <a href="#health-tips">Health Tips</a>
+            <a href="#articles">Articles</a>
+            <a href="#contact-us">Contact Us</a>
+            <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="main"> 
+
+            <!--card1 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://amoryurgentcare.com/wp-content/uploads/2020/04/what-can-a-blood-test-tell-you-1536x1025.jpg" alt="Blood test">
+                </div>
+                <h1 class="title">TESTS</h1>
+                <div class="des">
+                    <p>Daily base test in home</p>
+                    <button class="btn"><a href="test.html">Test</a></button>
+                </div>
+            </div>
+
+            <!--card2 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://th.bing.com/th/id/OIP.E4Awk_r9eYX1Ef8Qld5zRgHaHa?rs=1&pid=ImgDetMain" alt="Medicine list">
+                </div>
+                <div class="title">
+                    <h1>List For search in detail</h1>
+                </div>
+                <div class="des">
+                    <p>Various types of medicine...</p>
+                    <button class="btn"><a href="lists.html"> List</a></button>
+                </div>
+            </div>
+
+            <!--card3 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://th.bing.com/th/id/OIP.2XerAACH6C3snyMfpjuI6AAAAA?rs=1&pid=ImgDetMain" alt="Graphs">
+                </div>
+                <div class="title">
+                    <h1>GRAPHS</h1>
+                </div>
+                <div class="des">
+                    <p>Reading the values of tests</p>
+                    <button class="btn">View Graphs</button>
+                </div>
+            </div>
+
+            <!--card4 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://lh3.googleusercontent.com/5wW9z1T4Xazf3kVu_psNK5Cz4xhFtn4O7QY0kx_go-ABdiCUM1uUKUJvEs9mT2c1p1yf" alt="Reminder">
+                </div>
+                <div class="title">
+                    <h1>REMINDER</h1>
+                </div>
+                <div class="des">
+                    <p>Reminds the medicine at time</p>
+                    <button class="btn">Reminder</button>
+                </div>
+            </div>
+
+            <!--card5 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://s3-media3.fl.yelpcdn.com/bphoto/3hsrgKOnk4B0zmUccQ0bEA/o.jpg" alt="Pharmacy">
+                </div>
+                <div class="title">
+                    <h1>PHARMACY</h1>
+                </div>
+                <div class="des">
+                    <p>Buy medicine at our store</p>
+                    <button class="btn"><a href="online pharmacy/index.html">Pharmacy</a></button>
+                </div>
+            </div>
+
+            <!--card6 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://static.vecteezy.com/system/resources/previews/013/141/034/original/book-doctor-appointment-card-template-schedule-hospital-visit-editable-social-media-post-design-flat-color-illustration-for-poster-web-banner-ecard-vector.jpg" alt="Doctor Appointment">
+                </div>
+                <div class="title">
+                    <h1>DOCTOR APPOINTMENT</h1>
+                </div>
+                <div class="des">
+                    <button class="btn"><a href="laboatory1/appointments.html">Appointment</a></button>
+                </div>
+            </div>
+
+            <!--card7 -->
+            <div class="card">
+                <div class="image">
+                    <img src="https://coruzant.com/wp-content/uploads/2022/10/chatbot-robot.jpg" alt="Chatbot">
+                </div>
+                <div class="title">
+                    <h1>CHATBOT</h1>
+                </div>
+                <div class="des">
+                    <p>More Information on Problems</p>
+                    <a href="https://chatgpt.com/?oai-dm=1"><button class="btn">AI Support</button></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        function logout() {
+            //document.getElementById('mainPage').classList.add('hidden');
+            window.location.href = 'login.html';
+        }
+
+        function goToProfile() {
+            alert('Profile page will be here.');
+        }
+
+     
+    </script>
+
+</body>
+</html>
